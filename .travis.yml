@@ -1,0 +1,20 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t ramongo/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true ramongo/react-test npm test
+
+after_success:
+  - docker build -t ramongo/multi-client ./client
+  - docker build -t ramongo/multi-server ./server
+  - docker build -t ramongo/multi-worker ./worker
+  - docker build -t ramongo/multi-nginx ./nginx
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push ramongo/multi-client
+  - docker push ramongo/multi-server
+  - docker push ramongo/multi-worker
+  - docker push ramongo/multi-nginx
