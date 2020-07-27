@@ -1,0 +1,36 @@
+{
+	"AWSEBDockerrunVersion": 2 ,
+	"containerDefinitions": [
+		{
+			"name": "client",
+			"image": "ramongo/multi-client",
+			"hostname": "client",
+			"essential": false
+		},
+		{
+			"name": "server",
+			"image": "ramongo/multi-server",
+			"hostname": "api",
+			"essential": false
+		},
+		{
+			"name": "worker",
+			"image": "ramongo/multi-worker",
+			"hostname": "worker",
+			"essential": false
+		},
+		{
+			"name": "nginx",
+			"image": "ramongo/multi-nginx",
+			"hostname": "nginx",
+			"essential": true,
+			"portMappings": [
+				{
+					"hostPort":80,
+					"containerPort":80
+				}
+			],
+			"links": ["client","server"]
+		}
+	]
+}

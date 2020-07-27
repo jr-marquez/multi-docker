@@ -18,3 +18,15 @@ after_success:
   - docker push ramongo/multi-server
   - docker push ramongo/multi-worker
   - docker push ramongo/multi-nginx
+deploy:
+  edge: true
+  provider: elasticbeanstalk
+  region: eu-west-3
+  app: mulit-docker
+  env: MulitDocker-env
+  bucket_mame: elasticbeanstalk-eu-west-3-829250931565
+  bucket_path: docker-multi
+  on:
+    branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
